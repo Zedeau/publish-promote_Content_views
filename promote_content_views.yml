@@ -1,0 +1,24 @@
+- hosts: all
+  collections:
+  - theforeman.foreman
+  tasks:
+  - name: Register all Content Views
+    resource_info:
+      username: "{{ username }}"
+      password: "{{ password }}"
+      server_url: "{{ server_url }}"
+      organization: "{{ org }}"
+      resource: content_views
+    register: content_views
+
+  - name: Publish the content-view
+    content_view_version:
+      username: "{{ username }}"
+      password: "{{ password }}"
+      server_url: "{{ server_url }}"
+      content_view: "{{ item.name }}"
+      organization: "{{ org }}"
+      lifecycle_environments:
+        - "{{ env }}"
+    with_items: "{{ content_views.resources }}"
+    when: item.name != 'Default Organization View
