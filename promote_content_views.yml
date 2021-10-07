@@ -22,3 +22,17 @@
         - "{{ env }}"
     with_items: "{{ content_views.resources }}"
     when: item.name != 'Default Organization View
+    
+    
+  - name: Publish the content-view
+    content_view_version:
+      username: "{{ username }}"
+      password: "{{ password }}"
+      server_url: "{{ server_url }}"
+      content_view: "{{ item.name }}"
+      version: "{{ item.versions[0].version }}"
+      organization: UNIVERSCIENCE
+      lifecycle_environments:
+       - PreProd
+    with_items: "{{ content_views.resources }}"
+    when: item.name != 'Default Organization View'
